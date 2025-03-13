@@ -1,0 +1,61 @@
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: airbyte-ui
+  namespace: airbyte
+spec:
+  hostname: airbyte.cloudtest1.my.id
+  prefix: /
+  service: airbyte-airbyte-webapp-svc.airbyte:80
+  timeout_ms: 30000
+
+#---
+#
+#apiVersion: getambassador.io/v3alpha1
+#kind: Mapping
+#metadata:
+#  name: airbyte-server
+#  namespace: airbyte
+#spec:
+#  hostname: airbyte.cloudtest1.my.id
+#  prefix: /api/
+#  service: airbyte-airbyte-server-svc.airbyte:8001
+#  timeout_ms: 60000
+
+---
+
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: airbyte-connector-builder
+  namespace: airbyte
+spec:
+  hostname: airbyte.cloudtest1.my.id
+  prefix: /connector-builder/
+  service: airbyte-airbyte-connector-builder-server-svc.airbyte:80
+  timeout_ms: 30000
+
+---
+
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: airbyte-workload-api
+  namespace: airbyte
+spec:
+  hostname: airbyte.cloudtest1.my.id
+  prefix: /workload/
+  service: airbyte-workload-api-server-svc.airbyte:8007
+  timeout_ms: 30000
+
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: acme-challenge-mapping
+  namespace: airbyte
+spec:
+  prefix: /.well-known/acme-challenge/
+  service: cm-acme-http-solver-4rc8l.airbyte:8089
+#  docs_only: true
+ # host_redirect: true

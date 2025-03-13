@@ -1,0 +1,9 @@
+apiVersion: getambassador.io/v3alpha1
+kind: TLSContext
+metadata:
+  name: airbyte-tls
+  namespace: airbyte
+spec:
+  hosts:
+    - airbyte.cloudtest1.my.id
+  secret: airbyte-tls  # Refers to the manually created Kubernetes secret

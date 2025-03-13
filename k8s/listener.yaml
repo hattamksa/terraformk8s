@@ -1,0 +1,39 @@
+apiVersion: getambassador.io/v3alpha1
+kind: Listener
+metadata:
+  name: airbyte-listener
+  namespace: airbyte
+spec:
+  port: 8443  # ✅ Ganti ke port yang lebih tinggi
+  protocol: HTTPS
+  securityModel: XFP
+  hostBinding:
+    namespace:
+      from: SELF
+---
+apiVersion: getambassador.io/v3alpha1
+kind: Listener
+metadata:
+  name: emissary-ingress-listener-8080
+  namespace: emissary
+spec:
+  port: 8080
+  protocol: HTTP
+  securityModel: XFP
+  hostBinding:
+    namespace:
+      from: ALL
+---
+#apiVersion: getambassador.io/v3alpha1
+#kind: Listener
+#metadata:
+#  name: http-listener
+#  namespace: airbyte
+#spec:
+#  port: 8080
+#  protocol: HTTP
+#  securityModel: XFP
+#  hostBinding:
+#    namespace:
+#      from: ALL
+

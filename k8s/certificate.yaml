@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: airbyte-tls
+  namespace: airbyte  
+spec:
+  secretName: airbyte-tls-secret  
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - airbyte.cloudtest1.my.id  
