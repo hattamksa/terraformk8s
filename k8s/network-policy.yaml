@@ -4,34 +4,33 @@ metadata:
   name: deny-to-outside-namespaces
   namespace: airbyte
 spec:
-  egress:
-    - to:
-        - namespaceSelector:
-            matchExpressions:
-              - key: kubernetes.io/metadata.name
-                operator: In
-                values:
-                  - airbyte
-            matchLabels:
-              kubernetes.io/metadata.name: airbyte
-    - ports:
-        - port: 53
-          protocol: TCP
-      to:
-        - namespaceSelector:
-            matchExpressions:
-              - key: kubernetes.io/metadata.name
-                operator: In
-                values:
-                  - kube-system
-            matchLabels:
-              kubernetes.io/metadata.name: kube-system
-    - ports: #outside exsternal network
-        - port: 443
-          protocol: TCP
-      to:
-        - ipBlock:
-            cidr: 0.0.0.0/0
   podSelector: {}
   policyTypes:
     - Egress
+  egress:
+    # Izinkan komunikasi dalam namespace airbyte
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: airbyte
+
+    # Izinkan komunikasi ke kube-system hanya untuk DNS (port 53 TCP)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - port: 53
+          protocol: TCP
+
+    # Izinkan akses ke luar hanya untuk port 22, 443, dan 80
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+      ports:
+        - port: 22
+          protocol: TCP
+        - port: 80
+          protocol: TCP
+        - port: 443
+          protocol: TCP
