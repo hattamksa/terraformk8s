@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-to-outside-namespaces
+  namespace: airbyte
+spec:
+  egress:
+    - to:
+        - namespaceSelector:
+            matchExpressions:
+              - key: kubernetes.io/metadata.name
+                operator: In
+                values:
+                  - airbyte
+            matchLabels:
+              kubernetes.io/metadata.name: airbyte
+    - ports:
+        - port: 53
+          protocol: TCP
+      to:
+        - namespaceSelector:
+            matchExpressions:
+              - key: kubernetes.io/metadata.name
+                operator: In
+                values:
+                  - kube-system
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+    - ports: #outside exsternal network
+        - port: 443
+          protocol: TCP
+      to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+  podSelector: {}
+  policyTypes:
+    - Egress
